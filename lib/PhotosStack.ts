@@ -6,6 +6,7 @@ import { CfnOutput, Fn } from "aws-cdk-lib";
 export class PhotosStack extends cdk.Stack {
     
     private stackSuffix: string;
+    public readonly photoBucketArn: string;
 
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
@@ -16,10 +17,7 @@ export class PhotosStack extends cdk.Stack {
             bucketName: `photos-bucket-${this.stackSuffix}`
         });
 
-        new CfnOutput(this, 'photos-bucket', {
-            value: photosBucket.bucketArn,
-            exportName: 'photos-bucket'
-        })
+        this.photoBucketArn = photosBucket.bucketArn; // stored the ARN of the bucket so we can pass it to the PhotosHandlerStack
 
         //a way to change the logical ID
         // (myBucket.node.defaultChild as CfnBucket).overrideLogicalId('PhotosBucket1234')
